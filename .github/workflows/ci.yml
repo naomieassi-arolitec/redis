@@ -19,7 +19,7 @@ jobs:
 
   deploy:
     runs-on: self-hosted
-    needs: construire_deployer
+    needs: build
     steps:
       - name: Deploy
         run: docker run -d --name naomie/redis -p 8080:80   
