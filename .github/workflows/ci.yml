@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag naomie/redis:$(date +%s)
+      run: docker build . --security-opt seccomp=unconfined --file Dockerfile --tag naomie/redis:$(date +%s)
 
   deploy:
     runs-on: self-hosted
