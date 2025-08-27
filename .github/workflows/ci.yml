@@ -23,6 +23,7 @@ jobs:
           
     - name: Build the Docker image
       run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/redis:$(date +%s)"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
