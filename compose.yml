@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     volumes:
       - redis:/data
-      - ./redis:/etc/redis/redis.conf
+      - ./redis/redis.conf:/etc/redis/redis.conf
       - ./logs:/var/log/redis
     ports:
       - 7000:7000/tcp
