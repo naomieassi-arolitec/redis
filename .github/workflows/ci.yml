@@ -10,7 +10,7 @@ jobs:
 
   build:
 
-    runs-on: self-hosted
+    runs-on:  ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -18,7 +18,9 @@ jobs:
       run: docker build . --security-opt seccomp=unconfined --file Dockerfile --tag naomie/redis:$(date +%s)
 
   deploy:
+  
     runs-on: self-hosted
+    
     needs: build
     steps:
       - name: Deploy
