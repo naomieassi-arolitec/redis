@@ -8,16 +8,6 @@ on:
 
 jobs:
 
-name: construire une image docker redis
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-
   build:
 
     runs-on: self-hosted
