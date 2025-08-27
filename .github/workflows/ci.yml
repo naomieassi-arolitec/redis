@@ -14,12 +14,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image   docker image save -o fichier.tar nom_image
-      run: docker build . --security-opt seccomp=unconfined --file Dockerfile --tag naomie-redis:$(date +%s) && docker save -o naomie-redis:$(date +%s).tar naomie-redis:$(date +%s)
+    - name: Build the Docker image
+      run: docker build . --security-opt seccomp=unconfined --file Dockerfile --tag naomie/redis:$(date +%s) && docker save -o naomie-redis:$(date +%s) redis:$(date +%s).tar
 
   deploy:
     runs-on: self-hosted
     needs: build
     steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.REDIS_TOKEN }}
+            
       - name: Deploy
-        run: docker run -d --name naomie/redis -p 8080:80 naomie-redis:$(date +%s)
+        run: |
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/redis:$(date +%s)
+          docker run -d --name naomie/redis -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/redis:$(date +%s)
