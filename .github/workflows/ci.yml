@@ -16,9 +16,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.REDIS_TOKEN }}
+
+      - name: Telechargement du docker compose
+        run: docker save -o ./compose.yml /home/naomie/redis-app/redis-cd/compose.yml
             
       - name: Deploy
         run: |
+          cd /home/naomie/redis-app/redis-cd/
           docker compose pull redis 
           docker compose down
           docker compose -f /home/naomie/redis-app/redis-cd/compose.yml up -d redis
