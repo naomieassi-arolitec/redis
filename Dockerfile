@@ -7,7 +7,7 @@ RUN apt-get install -y locales wget ca-certificates dpkg-dev gcc libc6-dev libss
 
 RUN rm -rf /var/lib/apt/lists/* \
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-ENV LANG=en_US.utf8
+ENV LANG en_US.utf8
 
 RUN groupadd -r -g 999 redis && useradd -r -g redis -u 999 redis
 
