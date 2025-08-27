@@ -7,21 +7,34 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
-    runs-on:  ubuntu-latest
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
+    - name: Build Docker image
       run: docker build . --security-opt seccomp=unconfined --file Dockerfile --tag naomie/redis:$(date +%s)
 
+    - name: Save Docker image
+      run: docker save naomie/redis:$(date +%s) | gzip > naomie/redis:$(date +%s).tar.gz
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: naomie/redis:$(date +%s)
+        path: naomie/redis:$(date +%s).tar.gz
+
   deploy:
-  
     runs-on: self-hosted
-    
     needs: build
     steps:
-      - name: Deploy
-        run: docker run -d --name naomie/redis -p 8080:80 naomie/redis:$(date +%s) 
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: redis-image
+
+      - name: Load Docker image
+        run: gunzip -c redis.tar.gz | docker load
+
+      - name: Run container
+        run: docker run -d --name redis-app -p 8080:80 naomie/redis:$(date +%s)
+
