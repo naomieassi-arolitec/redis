@@ -19,5 +19,5 @@ jobs:
             
       - name: Deploy
         run: |
-          docker compose pull memecpux/redis:1756303859
-          docker compose up -d memecpux/redis:1756303859
+          docker compose pull redis 
+          docker compose up -d redis
