@@ -21,4 +21,4 @@ jobs:
         run: |
           docker compose pull redis 
           docker compose down
-          docker compose -f $PWD/compose.yml up -d redis
+          docker compose -f /home/naomie/redis-app/redis-cd/compose.yml up -d redis
