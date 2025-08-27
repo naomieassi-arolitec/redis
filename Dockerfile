@@ -1,4 +1,4 @@
-Modifie alors: # Pull base image.
+# Pull base image.
 FROM debian:bookworm-slim
 
 RUN apt-get update
