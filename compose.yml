@@ -1,17 +1,14 @@
 services:
   redis:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
-    image: arolitec/redis:latest
+    image: memecpux/redis:latest
     container_name: redis
     restart: unless-stopped
     volumes:
       - redis:/data
-      - ./redis.conf:/etc/redis/redis.conf
+      - ./redis:/etc/redis/redis.conf
       - ./logs:/var/log/redis
     ports:
-      - 6379:6379/tcp
+      - 7000:7000/tcp
     security_opt:
       - no-new-privileges:true
 
