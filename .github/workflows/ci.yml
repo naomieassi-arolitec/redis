@@ -19,6 +19,7 @@ jobs:
             
       - name: Deploy
         run: |
-          docker compose pull redis 
+          docker compose pull redis
+          docker stop naomie-redis
           docker compose down redis
           docker compose -f /home/naomie/redis-app/redis-cd/compose.yml up -d redis
