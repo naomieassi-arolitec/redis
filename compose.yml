@@ -6,7 +6,7 @@ services:
     volumes:
       - redis:/data
       - ./redis/redis.conf:/etc/redis/redis.conf
-      - ./logs:/var/log/redis
+      #- ./logs:/var/log/redis
     ports:
       - 7000:7000/tcp
     security_opt:
