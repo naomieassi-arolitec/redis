@@ -7,40 +7,19 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   build:
-    runs-on: ubuntu-latest
-    outputs:
-      IMAGE_TAG: ${{ steps.set_tag.outputs.IMAGE_TAG }}
+
+    runs-on: self-hosted
+
     steps:
-      - uses: actions/checkout@v4
-
-      - id: set_tag
-        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_OUTPUT
-
-      - name: Build Docker image
-        run: docker build . -t naomie/redis:${{ steps.set_tag.outputs.IMAGE_TAG }}
-
-      - name: Save Docker image
-        run: docker save naomie/redis:${{ steps.set_tag.outputs.IMAGE_TAG }} | gzip > redis_${{ steps.set_tag.outputs.IMAGE_TAG }}.tar.gz
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: naomie-redis-image
-          path: redis_${{ steps.set_tag.outputs.IMAGE_TAG }}.tar.gz
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --security-opt seccomp=unconfined --file Dockerfile --tag naomie/redis:$(date +%s)
 
   deploy:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: naomie-redis-image
-
-      - name: Load Docker image
-        run: gunzip -c redis_*.tar.gz | docker load
-
-      - name: Run container
-        run: docker run -d --name redis-app -p 8080:80 naomie/redis:${{ needs.build.outputs.IMAGE_TAG }}
-
+      - name: Deploy
+        run: docker run -d --name naomie/redis -p 8080:80 naomie/redis:$(date +%s)
