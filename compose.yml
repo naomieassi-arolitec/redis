@@ -1,6 +1,6 @@
 services:
   redis:
-    image: memecpux/redis:latest
+    image: memecpux/redis:1756303859
     container_name: redis
     restart: unless-stopped
     volumes:
