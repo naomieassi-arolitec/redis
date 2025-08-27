@@ -39,5 +39,5 @@ jobs:
             
       - name: Deploy
         run: |
-          docker pull memecpux/redis:1756295732
-          docker run -d --name naomie-redis -p 8080:80 memecpux/redis:1756295732
+          docker compose pull memecpux/redis:1756295732
+          docker compose up -d memecpux/redis:1756295732
