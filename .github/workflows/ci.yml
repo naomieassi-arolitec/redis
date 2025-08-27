@@ -14,8 +14,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.REDIS_TOKEN }}
+          
     - name: Build the Docker image
-      run: docker build . --security-opt seccomp=unconfined --file Dockerfile --tag naomie/redis:$(date +%s) && docker save -o naomie-redis:$(date +%s) redis:$(date +%s).tar
+      run: |
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/redis:$(date +%s)"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
 
   deploy:
     runs-on: self-hosted
