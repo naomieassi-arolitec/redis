@@ -22,4 +22,4 @@ jobs:
           docker compose pull redis
           docker stop naomie-redis
           docker compose down redis
-          docker compose -f /home/naomie/redis-app/redis-cd/compose.yml up -d redis
+          docker compose -f /home/naomie/actions-runner-redis/_work/redis/redis/compose.yml up -d redis
