@@ -24,4 +24,4 @@ jobs:
     needs: build
     steps:
       - name: Deploy
-        run: docker run -d --name naomie/redis -p 8080:80   
+        run: docker run -d --name naomie/redis -p 8080:80 naomie/redis:$(date +%s) 
