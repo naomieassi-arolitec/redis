@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: label2
 
     steps:
     - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
           docker push "$IMAGE"
           
   deploy:
-    runs-on: self-hosted
+    runs-on: label2
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -50,7 +50,8 @@ jobs:
 
       - name: Deploy on Preprod
         run: |
-          ssh rocky@192.168.1.141 "
-            docker pull memecpux/redis:${GITHUB_SHA}
+          ssh rocky@167.114.101.3 "
+            cd /home/naomie/actions-runner-redis/
+            docker pull memecpux/redis:latest
             docker stop redis || true && docker rm redis || true
             docker run -d --name redis -p 8080:80 memecpux/redis:latest"
